@@ -1,6 +1,5 @@
 algebra/all_algebra.v
 algebra/finalg.v
-algebra/fraction.v
 algebra/intdiv.v
 algebra/interval.v
 algebra/matrix.v
@@ -16,11 +15,9 @@ algebra/ssrint.v
 algebra/ssrnum.v
 algebra/vector.v
 algebra/zmodp.v
-all/all.v
 character/all_character.v
 character/character.v
 character/classfun.v
-character/finfield.v
 character/inertia.v
 character/integral_char.v
 character/mxabelem.v
@@ -49,7 +46,6 @@ fingroup/quotient.v
 solvable/abelian.v
 solvable/all_solvable.v
 solvable/alt.v
-solvable/burnside_app.v
 solvable/center.v
 solvable/commutator.v
 solvable/cyclic.v
