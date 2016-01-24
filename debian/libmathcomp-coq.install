@@ -10,6 +10,8 @@
                   usr/lib/coq/user-contrib/mathcomp/character/*.vo
                   usr/lib/coq/user-contrib/mathcomp/solvable/*.v
                   usr/lib/coq/user-contrib/mathcomp/solvable/*.vo
+                  usr/lib/coq/user-contrib/mathcomp/all/*.v
+                  usr/lib/coq/user-contrib/mathcomp/all/*.vo
                   usr/lib/coq/user-contrib/mathcomp/real_closed/*.v
                   usr/lib/coq/user-contrib/mathcomp/real_closed/*.vo
 htmldoc           usr/share/doc/libmathcomp-coq/
