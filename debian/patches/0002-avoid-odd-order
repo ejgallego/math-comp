@@ -13,14 +13,6 @@ are templates for supplementary fields that you might want to add:
 
 --- math-comp-1.6.orig/mathcomp/Make
 +++ math-comp-1.6/mathcomp/Make
-@@ -16,7 +16,6 @@ algebra/ssrint.v
- algebra/ssrnum.v
- algebra/vector.v
- algebra/zmodp.v
--all/all.v
- character/all_character.v
- character/character.v
- character/classfun.v
 @@ -46,40 +45,6 @@ fingroup/morphism.v
  fingroup/perm.v
  fingroup/presentation.v
