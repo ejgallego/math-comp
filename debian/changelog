@@ -1,3 +1,9 @@
+math-comp (1.6-0~ubuntu0~wily1) wily; urgency=medium
+
+  * Fix missing file in install file.
+
+ -- Emilio Jesús Gallego Arias <e@x80.org>  Sun, 24 Jan 2016 22:19:08 +0100
+
 math-comp (1.6-0~ubuntu0~wily0) wily; urgency=medium
 
   * Update to new math-comp repository structure.
