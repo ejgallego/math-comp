@@ -1,0 +1,49 @@
+--- math-comp-1.6.orig/htmldoc/Makefile
++++ math-comp-1.6/htmldoc/Makefile
+@@ -12,21 +12,25 @@ RELEASED=$(shell git show $(LAST):mathco
+ endif
+ 
+ all:
+-	$(H) git diff-index --quiet HEAD ||\
+-		(echo error: uncommitted files; exit 1)
++	# $(H) git diff-index --quiet HEAD ||\
++	# 	(echo error: uncommitted files; exit 1)
+ 	$(H) cd ../mathcomp;\
+ 		$(COQBIN)/coqdep -R . mathcomp $(SRC) 2>/dev/null |\
+ 			grep -v vio: > ../htmldoc/depend
+ 	$(H) cat depend | ./buildlibgraph cytoscape $(RELEASED) > depend.js
++# XXX: Still not ready, must force the mangling of sources out-of-tree
+ 	$(H) . ../etc/utils/builddoc_lib.sh; \
+ 		cd ../mathcomp; mangle_sources $(SRC)
+-	$(H) make -C ../mathcomp clean
+-	$(H) make -C ../mathcomp -j2
++	# $(H) make -C ../mathcomp clean
++	# $(H) make -C ../mathcomp -j2
+ 	$(H) cd ../mathcomp; $(COQBIN)/coqdoc -t "Mathematical Components"\
+ 	       	-g --utf8 -R . mathcomp \
+-        	--parse-comments \
++		--parse-comments \
+ 		--multi-index $(SRC) -d ../htmldoc/
+ 	$(H) cp ../etc/artwork/coqdoc.css .
+-	$(H) cd ../mathcomp; git checkout $(SRC)
+-	
++	# $(H) cd ../mathcomp; git checkout $(SRC)
++
++.PHONY: clean
++clean:
++	rm -f mathcomp.*html index*.*html depend depend.js coqdoc.css
+ 
+--- math-comp-1.6.orig/mathcomp/Makefile
++++ math-comp-1.6/mathcomp/Makefile
+@@ -27,7 +27,10 @@ MAKEFLAGS+=-B
+ 		-f Makefile.coq $* \
+ 		COQDEP='$(COQDEP) -exclude-dir plugin -c'
+ 
++SYMLINKS=ssreflect.ml4 ssreflect.mllib ssrmatching.ml4 ssrmatching.mli
+ clean:
+ 	$(H)MAKEFLAGS=$(OLD_MAKEFLAGS) $(MAKE) --no-print-directory \
+-		-f Makefile.coq clean
++		-f Makefile.coq clean || true
+ 	$(H)rm -f Makefile.coq
++	$(H)rm -f $(SYMLINKS)
++	$(H)rm -f */.*.aux */*.d */*.glob

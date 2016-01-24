@@ -1,0 +1,15 @@
+                  usr/lib/coq/user-contrib/mathcomp/ssreflect/*.v
+                  usr/lib/coq/user-contrib/mathcomp/ssreflect/*.vo
+                  usr/lib/coq/user-contrib/mathcomp/fingroup/*.v
+                  usr/lib/coq/user-contrib/mathcomp/fingroup/*.vo
+                  usr/lib/coq/user-contrib/mathcomp/algebra/*.v
+                  usr/lib/coq/user-contrib/mathcomp/algebra/*.vo
+                  usr/lib/coq/user-contrib/mathcomp/field/*.v
+                  usr/lib/coq/user-contrib/mathcomp/field/*.vo
+                  usr/lib/coq/user-contrib/mathcomp/character/*.v
+                  usr/lib/coq/user-contrib/mathcomp/character/*.vo
+                  usr/lib/coq/user-contrib/mathcomp/solvable/*.v
+                  usr/lib/coq/user-contrib/mathcomp/solvable/*.vo
+                  usr/lib/coq/user-contrib/mathcomp/real_closed/*.v
+                  usr/lib/coq/user-contrib/mathcomp/real_closed/*.vo
+htmldoc           usr/share/doc/libmathcomp-coq/

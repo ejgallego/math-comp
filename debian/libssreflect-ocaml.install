@@ -1,2 +1,2 @@
-     usr/lib/coq/user-contrib/Ssreflect/ssreflect.cma
-usr/lib/coq/user-contrib/Ssreflect/ssreflect.cmxs
+     usr/lib/coq/user-contrib/mathcomp/ssreflect.cma
+usr/lib/coq/user-contrib/mathcomp/ssreflect.cmxs

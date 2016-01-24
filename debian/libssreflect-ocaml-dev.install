@@ -1,2 +1,2 @@
-usr/lib/coq/user-contrib/Ssreflect/ssrmatching.cmi
-usr/lib/coq/user-contrib/Ssreflect/ssreflect.cmi
+usr/lib/coq/user-contrib/mathcomp/ssrmatching.cmi
+usr/lib/coq/user-contrib/mathcomp/ssreflect.cmi

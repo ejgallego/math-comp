@@ -1,0 +1,9 @@
+Document: mathcomp-library
+Title: The MathComp Library
+Author: The MathComp Development Team
+Abstract: This is the coqdoc-generated documentation for MathComp
+Section: Science/Mathematics
+
+Format: HTML
+Index: /usr/share/doc/libmathcomp-coq/htmldoc/index.html
+Files: /usr/share/doc/libmathcomp-coq/htmldoc/*.html

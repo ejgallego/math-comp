@@ -1,4 +1,4 @@
-Source: ssreflect
+Source: math-comp
 Priority: optional
 Maintainer: Debian OCaml Maintainers <debian-ocaml-maint@lists.debian.org>
 Uploaders: Stéphane Glondu <glondu@debian.org>
@@ -9,10 +9,11 @@ Build-Depends:
  dh-ocaml (>= 0.9~),
  camlp5 (>= 5.12-2~),
  ocaml-best-compilers,
- ocaml-nox (>= 4)
-Standards-Version: 3.9.5
+ ocaml-nox (>= 4.01),
+ lua5.1
+Standards-Version: 3.9.6
 Section: math
-Homepage: http://www.msr-inria.fr/projects/mathematical-components/
+Homepage: https://github.com/math-comp/math-comp
 Vcs-Browser: http://anonscm.debian.org/gitweb/?p=pkg-ocaml-maint/packages/ssreflect.git
 Vcs-Git: git://anonscm.debian.org/pkg-ocaml-maint/packages/ssreflect.git
 
@@ -47,13 +48,13 @@ Description: small scale reflection extension for Coq (devt files)
  extension for Coq. It provides the static native-code library, needed
  to build custom toplevels, and the compiled interface.
 
-Package: libssreflect-coq
+Package: libmathcomp-coq
 Architecture: all
 Depends:
  libssreflect-ocaml (>= ${source:Version}),
  coq-${F:CoqABI},
  ${misc:Depends}
-Provides: ssreflect
+Provides: math-comp
 Description: small scale reflection library for Coq (theories)
  The name Ssreflect stands for "small scale reflection", a style of
  proof that evolved from the computer-checked proof of the Four Colour
@@ -61,7 +62,7 @@ Description: small scale reflection library for Coq (theories)
  underlying logic to provide effective automation for many small,
  clerical proof steps. This is often accomplished by restating
  ("reflecting") problems in a more concrete form, hence the name. For
- example, in the Ssreflect library, arithmetic comparison is not an
+ example, in the MathComp library, arithmetic comparison is not an
  abstract predicate, but a function computing a boolean.
  .
  The Ssreflect distribution comprises two parts:
@@ -73,4 +74,4 @@ Description: small scale reflection library for Coq (theories)
    theories for basic combinatorics (roughly: arithmetic, lists, and
    finite sets).
  .
- This package installs the full Ssreflect distribution.
+ This package installs the full MathComp distribution.

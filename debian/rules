@@ -9,7 +9,7 @@ export COQBIN := /usr/bin/
 
 PACKAGES := $(shell dh_listpackages)
 
-INSTALL_DIR := $(CURDIR)/debian/tmp/usr/lib/coq/user-contrib/Ssreflect
+# INSTALL_DIR := $(CURDIR)/debian/tmp/usr/lib/coq/user-contrib/Ssreflect
 
 # The following must be kept in sync with d/libssreflect-ocaml*.install.in
 PLUGIN_TARGETS := theories/ssreflect.cma
@@ -23,38 +23,49 @@ EXTRA_FILES := src/ssrmatching.cmi src/ssreflect.cmi
 
 .PHONY: override_dh_auto_build
 override_dh_auto_build:
+	$(MAKE) -C mathcomp
+# Hack until we support building the docs
+	touch htmldoc/index.html
 
 # Building is done here because dh_listpackages is useless in the
 # build target. Should be reconsidered when dpkg-buildpackage starts
 # calling build-{arch,indep} targets (see #604397)
+# .PHONY: override_dh_auto_install
+# override_dh_auto_install:
+# ifeq ($(findstring libssreflect-coq,$(PACKAGES)),)
+# Express build: only plugins
+	# $(MAKE) Makefile.coq
+	# $(MAKE) -f Makefile.coq $(PLUGIN_TARGETS)
+	# install -d $(INSTALL_DIR)
+	# install -m 644 $(PLUGIN_TARGETS) $(EXTRA_FILES) $(INSTALL_DIR)
+# else
+# Full build
+# 	$(MAKE)
+# 	$(MAKE) install DSTROOT=$(CURDIR)/debian/tmp
+# 	$(MAKE) -f Makefile.coq html
+# endif
+
 .PHONY: override_dh_auto_install
 override_dh_auto_install:
-ifeq ($(findstring libssreflect-coq,$(PACKAGES)),)
-# Express build: only plugins
-	$(MAKE) Makefile.coq
-	$(MAKE) -f Makefile.coq $(PLUGIN_TARGETS)
-	install -d $(INSTALL_DIR)
-	install -m 644 $(PLUGIN_TARGETS) $(EXTRA_FILES) $(INSTALL_DIR)
-else
-# Full build
-	$(MAKE)
-	$(MAKE) install DSTROOT=$(CURDIR)/debian/tmp
-	$(MAKE) -f Makefile.coq html
-endif
+	$(MAKE) -C mathcomp install DSTROOT=../debian/tmp/
 
 .PHONY: override_dh_install
 override_dh_install:
-	dh_install --fail-missing
+	dh_install -X.glob --fail-missing
 
 .PHONY: override_dh_auto_clean
 override_dh_auto_clean:
-	dh_auto_clean
-	rm -Rf bin
+	$(MAKE) -C mathcomp clean
+	$(MAKE) -C htmldoc  clean
+	# dh_auto_clean
+	# rm -Rf bin
 
-.PHONY: override_dh_clean
-override_dh_clean:
-	dh_clean
-	rm -Rf html
+# .PHONY: override_dh_clean
+# override_dh_clean:
+# 	cd mathcomp
+# 	$(MAKE) clean
+	# dh_clean
+	# rm -Rf html
 
 .PHONY: override_dh_gencontrol
 override_dh_gencontrol:
