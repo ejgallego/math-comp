@@ -1,4 +1,4 @@
-math-comp (1.6-0~ubuntu0~wily0) unstable; urgency=medium
+math-comp (1.6-0~ubuntu0~wily0) wily; urgency=medium
 
   * Update to new math-comp repository structure.
   * Renamed libssreflect-coq to libmathcomp-coq.
