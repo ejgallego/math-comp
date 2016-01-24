@@ -1,0 +1,76 @@
+Source: ssreflect
+Priority: optional
+Maintainer: Debian OCaml Maintainers <debian-ocaml-maint@lists.debian.org>
+Uploaders: Stéphane Glondu <glondu@debian.org>
+Build-Depends:
+ debhelper (>= 8),
+ coq (>= 8.5),
+ libcoq-ocaml-dev (>= 8.5),
+ dh-ocaml (>= 0.9~),
+ camlp5 (>= 5.12-2~),
+ ocaml-best-compilers,
+ ocaml-nox (>= 4)
+Standards-Version: 3.9.5
+Section: math
+Homepage: http://www.msr-inria.fr/projects/mathematical-components/
+Vcs-Browser: http://anonscm.debian.org/gitweb/?p=pkg-ocaml-maint/packages/ssreflect.git
+Vcs-Git: git://anonscm.debian.org/pkg-ocaml-maint/packages/ssreflect.git
+
+Package: libssreflect-ocaml
+Section: ocaml
+Architecture: any
+Depends:
+ ${ocaml:Depends},
+ ${shlibs:Depends},
+ ${misc:Depends}
+Enhances: coq
+Provides: ${ocaml:Provides}
+Description: small scale reflection extension for Coq (plugin)
+ This package is part of Ssreflect, the small scale reflection
+ extension for Coq. It provides a new tactic language, which promotes
+ more structured, concise and robust proof scripts, and is in fact
+ independent from the "reflection" proof style. It is implemented as a
+ linkable extension to the Coq system.
+
+Package: libssreflect-ocaml-dev
+Section: ocaml
+Architecture: any
+Depends:
+ ${ocaml:Depends},
+ ${shlibs:Depends},
+ ${misc:Depends}
+Replaces: libssreflect-ocaml (<< 1.2+dfsg-3~)
+Breaks: libssreflect-ocaml (<< 1.2+dfsg-3~)
+Provides: ${ocaml:Provides}
+Description: small scale reflection extension for Coq (devt files)
+ This package is part of Ssreflect, the small scale reflection
+ extension for Coq. It provides the static native-code library, needed
+ to build custom toplevels, and the compiled interface.
+
+Package: libssreflect-coq
+Architecture: all
+Depends:
+ libssreflect-ocaml (>= ${source:Version}),
+ coq-${F:CoqABI},
+ ${misc:Depends}
+Provides: ssreflect
+Description: small scale reflection library for Coq (theories)
+ The name Ssreflect stands for "small scale reflection", a style of
+ proof that evolved from the computer-checked proof of the Four Colour
+ Theorem and which leverages the higher-order nature of Coq's
+ underlying logic to provide effective automation for many small,
+ clerical proof steps. This is often accomplished by restating
+ ("reflecting") problems in a more concrete form, hence the name. For
+ example, in the Ssreflect library, arithmetic comparison is not an
+ abstract predicate, but a function computing a boolean.
+ .
+ The Ssreflect distribution comprises two parts:
+ * A new tactic language, which promotes more structured, concise and
+   robust proof scripts, and is in fact independent from the "reflection"
+   proof style. It is implemented as a linkable extension to the Coq
+   system.
+ * A set of Coq libraries that provide core "reflection-oriented"
+   theories for basic combinatorics (roughly: arithmetic, lists, and
+   finite sets).
+ .
+ This package installs the full Ssreflect distribution.

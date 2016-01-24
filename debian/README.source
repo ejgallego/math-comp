@@ -1,0 +1,35 @@
+Ssreflect Debian source package
+===============================
+
+Packaging a new upstream
+------------------------
+
+ * Ssreflect uses internal structures of Coq and is quite easily
+   broken by new versions of Coq. However, some Coq developers
+   maintain a working version as Coq development goes at the
+   coq-contrib project on INRIA's GForge [1] (in Saclay directory).
+
+   [1] http://gforge.inria.fr/projects/coq-contribs/
+
+
+Patching upstream sources
+-------------------------
+
+This source package uses quilt to apply and remove its patches. Please
+refer to `/usr/share/doc/quilt/README.source' for information about
+how to use quilt for source packages.
+
+The quilt series is generated from the Git repository, using
+dom-{apply,save}-patches, from the dh-ocaml (>= 0.5) package. Please
+refer to the appendix about Git in the Debian OCaml Packaging Policy
+(from the same package).
+
+
+Building arch:all package
+-------------------------
+
+Building the arch:all package, libssreflect-coq, is not supported on
+architectures with native compiler, but with no natdynlink (only armel
+at the time of writing).
+
+ -- Stéphane Glondu <glondu@debian.org>, Sun, 24 Apr 2011 14:29:19 +0200

@@ -1,0 +1,11 @@
+Ssreflect for Debian
+====================
+
+This package doesn't provide the ssrcoq binary as built originally by
+upstream (but relies on dynamic linking instead), nor the PDF
+documentation (which is available online, see README).
+
+You can use Ssreflect directly with the regular Coq tools. For
+compatibility, a symlink to coqtop named "ssrcoq" is provided.
+
+ -- Stéphane Glondu <glondu@debian.org>, Tue,  1 Sep 2009 15:08:28 +0200

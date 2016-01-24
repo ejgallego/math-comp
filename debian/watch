@@ -1,0 +1,4 @@
+version=3
+opts=uversionmangle=s/(\d)(rc\d*)$/$1~$2/ \
+http://ssr.msr-inria.inria.fr/FTP/ \
+(?:|.*/)ssreflect(?:[_\-]v?|)(\d[^\s/]*)\.(?:tar\.xz|txz|tar\.bz2|tbz2|tar\.gz|tgz)

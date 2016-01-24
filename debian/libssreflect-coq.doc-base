@@ -1,0 +1,9 @@
+Document: ssreflect-library
+Title: The Ssreflect Library
+Author: The Ssreflect Development Team
+Abstract: This is the coqdoc-generated documentation for Ssreflect
+Section: Science/Mathematics
+
+Format: HTML
+Index: /usr/share/doc/libssreflect-coq/html/index.html
+Files: /usr/share/doc/libssreflect-coq/html/*.html
