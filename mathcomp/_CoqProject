@@ -1,1 +1,1 @@
--R . mathcomp
+-arg "-noinit" -R . mathcomp

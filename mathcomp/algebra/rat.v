@@ -782,6 +782,7 @@ Implicit Arguments ratr [[R]].
 
 (* Conntecting rationals to the ring an field tactics *)
 
+(*
 Ltac rat_to_ring :=
   rewrite -?[0%Q]/(0 : rat)%R -?[1%Q]/(1 : rat)%R
           -?[(_ - _)%Q]/(_ - _ : rat)%R -?[(_ / _)%Q]/(_ / _ : rat)%R
@@ -810,3 +811,4 @@ by move=> p /eqP p_neq0; rat_to_ring; rewrite mulVf.
 Qed.
 
 Add Field rat_field : rat_field_theory.
+*)

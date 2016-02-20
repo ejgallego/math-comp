@@ -1,4 +1,5 @@
 all_ssreflect.v
+init.v
 eqtype.v
 seq.v
 ssrbool.v

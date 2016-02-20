@@ -2772,7 +2772,7 @@ let injectl2rtac c = match kind_of_term c with
 let is_injection_case c gl =
   let gl, cty = pf_type_of gl c in
   let (mind,_), _ = pf_reduce_to_quantified_ind gl cty in
-  eq_gr (IndRef mind) (build_coq_eq ())
+  eq_gr (IndRef mind) (lib_ref "core.eq.type")
 
 let perform_injection c gl =
   let gl, cty = pf_type_of gl c in
@@ -3445,7 +3445,7 @@ let genclrtac cl cs clr =
       (apply_type cl cs)
       (fun type_err gl ->
          tclTHEN
-           (tclTHEN (Proofview.V82.of_tactic (elim_type (build_coq_False ()))) (cleartac clr))
+           (tclTHEN (Proofview.V82.of_tactic (elim_type (lib_constr "core.False.type"))) (cleartac clr))
            (fun gl -> raise type_err)
            gl))
     (cleartac clr)
@@ -3603,7 +3603,7 @@ END
 
 let mkEq dir cl c t n gl =
   let eqargs = [|t; c; c|] in eqargs.(dir_org dir) <- mkRel n;
-  let eq, gl = pf_fresh_global (build_coq_eq()) gl in 
+  let eq, gl = pf_fresh_global (lib_ref "core.eq.type") gl in 
   let refl, gl = mkRefl t c gl in
   mkArrow (mkApp (eq, eqargs)) (lift 1 cl), refl, gl
 
@@ -3886,7 +3886,7 @@ let ssrelim ?(is_case=false) ?ist deps what ?elim eqid ipats gl =
   (* Utils of local interest only *)
   let iD s ?t gl = let t = match t with None -> pf_concl gl | Some x -> x in
     pp(lazy(str s ++ pr_constr t)); tclIDTAC gl in
-  let eq, gl = pf_fresh_global (build_coq_eq ()) gl in
+  let eq, gl = pf_fresh_global (lib_ref "core.eq.type") gl in
   let protectC, gl = pf_mkSsrConst "protect_term" gl in
   let fire_subst gl t = Reductionops.nf_evar (project gl) t in
   let fire_sigma sigma t = Reductionops.nf_evar sigma t in
@@ -4449,6 +4449,7 @@ let congrtac ((n, t), ty) ist gl =
     | None -> errorstrm (str "No " ++ int n ++ str "-congruence with "
                          ++ pr_term t)
     else let rec loop i =
+      pp(lazy(str "uuu " ++ (int i)));
       if i > m then errorstrm (str "No congruence with " ++ pr_term t)
       else match interp_congrarg_at ist' gl i rf ty m with
       | Some cf -> cf
@@ -4475,7 +4476,7 @@ let newssrcongrtac arg ist gl =
   let ssr_congr lr = mkApp (arr, lr) in
   (* here thw two cases: simple equality or arrow *)
   let equality, _, eq_args, gl' =
-    let eq, gl = pf_fresh_global (build_coq_eq ()) gl in
+    let eq, gl = pf_fresh_global (lib_ref "core.eq.type") gl in
     pf_saturate gl eq 3 in
   tclMATCH_GOAL (equality, gl') (fun gl' -> fs gl' (List.assoc 0 eq_args))
   (fun ty -> congrtac (arg, Detyping.detype false [] (pf_env gl) (project gl) ty) ist)
@@ -4839,7 +4840,7 @@ let rwcltac cl rdx dir sr gl =
         pp(lazy(str"r@rwcltac=" ++ pr_constr (snd sr)));
   let cvtac, rwtac, gl =
     if closed0 r' then 
-      let env, sigma, c, c_eq = pf_env gl, fst sr, snd sr, build_coq_eq () in
+      let env, sigma, c, c_eq = pf_env gl, fst sr, snd sr, lib_ref "core.eq.type" in
       let sigma, c_ty = Typing.type_of env sigma c in
         pp(lazy(str"c_ty@rwcltac=" ++ pr_constr c_ty));
       match kind_of_type (Reductionops.whd_betadeltaiota env sigma c_ty) with
@@ -4892,7 +4893,8 @@ let lz_setoid_relation =
   | env', srel when env' == env -> srel
   | _ ->
     let srel =
-       try Some (coq_constant "Class_setoid" sdir "RewriteRelation")
+       try Some (Universes.constr_of_global @@
+                   coq_reference "Class_setoid" sdir "RewriteRelation")
        with _ -> None in
     last_srel := (env, srel); srel
 
@@ -4935,7 +4937,7 @@ let rwprocess_rule dir rule gl =
           | _ ->
             let sigma, pi2 = Evd.fresh_global env sigma coq_prod.Coqlib.proj2 in
             mkApp (pi2, ra), sigma in
-        if Term.eq_constr a.(0) (build_coq_True ()) then
+        if Term.eq_constr a.(0) (lib_constr "core.True.type") then
          let s, sigma = sr sigma 2 in
          loop (converse_dir d) sigma s a.(1) rs 0
         else

@@ -155,6 +155,26 @@ Set Implicit Arguments.
 Unset Strict Implicit.
 Unset Printing Implicit Defensive.
 
+
+Inductive list (A : Type) : Type :=
+ | nil : list A
+ | cons : A -> list A -> list A.
+
+Arguments nil {A}.
+Infix "::" := cons (at level 60, right associativity) : list_scope.
+Delimit Scope list_scope with list.
+Bind Scope list_scope with list.
+
+Definition app (A : Type) : list A -> list A -> list A :=
+  fix app l m :=
+  match l with
+   | nil => m
+   | (a :: l1)%list => (a :: app l1 m)%list
+  end.
+
+
+Infix "++" := app (right associativity, at level 60) : list_scope.
+
 Delimit Scope seq_scope with SEQ.
 Open Scope seq_scope.
 

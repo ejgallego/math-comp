@@ -163,7 +163,7 @@ Definition tree_ind K IH_leaf IH_node :=
   | Leaf x => IH_leaf x
   | Node n f0 =>
     let fix iter_conj f : foldr (fun t => and (K t)) True f :=
-        if f is t :: f' then conj (loop t) (iter_conj f') else Logic.I
+        if f is t :: f' then conj (loop t) (iter_conj f') else init.I
       in IH_node n f0 (iter_conj f0)
     end.
 

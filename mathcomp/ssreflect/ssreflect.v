@@ -1,7 +1,9 @@
 (* (c) Copyright 2006-2015 Microsoft Corporation and Inria.                  *)
 (* Distributed under the terms of CeCILL-B.                                  *)
-Require Import Bool. (* For bool_scope delimiter 'bool'. *)
+(* Require Import Bool. (* For bool_scope delimiter 'bool'. *) *)
+Require Export init.
 Require Import ssrmatching.
+
 Declare ML Module "ssreflect".
 Set SsrAstVersion.
 
@@ -284,7 +286,7 @@ Definition protect_term (A : Type) (x : A) : A := x.
 Notation unkeyed x := (let flex := x in flex).
 
 (* Ssreflect converse rewrite rule rule idiom. *)
-Definition ssr_converse R (r : R) := (Logic.I, r).
+Definition ssr_converse R (r : R) := (init.I, r).
 Notation "=^~ r" := (ssr_converse r) (at level 100) : form_scope.
 
 (* Term tagging (user-level).                                                 *)

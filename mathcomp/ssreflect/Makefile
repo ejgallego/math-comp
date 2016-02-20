@@ -30,4 +30,4 @@ MAKEFLAGS+=-B
 clean:
 	$(H)MAKEFLAGS=$(OLD_MAKEFLAGS) $(MAKE) --no-print-directory \
 		-f Makefile.coq clean
-	$(H)rm -f Makefile.coq
+	# $(H)rm -f Makefile.coq

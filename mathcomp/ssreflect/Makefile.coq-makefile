@@ -5,6 +5,6 @@ define coqmakefile
 	$$LN $(1)/plugin/$(V)/ssrmatching.mli .;\
 	$$LN $(1)/plugin/$(V)/ssrmatching.ml4 .;\
 	$$LN $(1)/plugin/$(V)/ssreflect.ml4 .;\
-	$(COQBIN)coq_makefile -f Make -o Makefile.coq)
+	$(COQBIN)coq_makefile -arg '-noinit' -f Make -o Makefile.coq)
 endef
 

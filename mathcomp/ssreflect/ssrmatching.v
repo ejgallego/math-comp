@@ -2,6 +2,8 @@
 (* Distributed under the terms of CeCILL-B.                                  *)
 Declare ML Module "ssreflect".
 
+Require Import init.
+
 Set Implicit Arguments.
 Unset Strict Implicit.
 Unset Printing Implicit Defensive.

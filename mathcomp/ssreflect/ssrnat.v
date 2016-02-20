@@ -3,9 +3,9 @@
 Require Import mathcomp.ssreflect.ssreflect.
 From mathcomp
 Require Import ssrfun ssrbool eqtype.
-Require Import BinNat.
-Require BinPos Ndec.
-Require Export Ring.
+(* Require Import BinNat. *)
+(* Require BinPos Ndec. *)
+(* Require Export Ring. *)
 
 (******************************************************************************)
 (* A version of arithmetic on nat (natural numbers) that is better suited to  *)
@@ -131,8 +131,8 @@ Delimit Scope nat_rec_scope with Nrec.
 (* SSreflect uses "pred" for the generic predicate type, and S as *)
 (* a local bound variable.                                        *)
 
-Notation succn := Datatypes.S.
-Notation predn := Peano.pred.
+Notation succn := init.S.
+Notation predn := init.pred.
 
 Notation "n .+1" := (succn n) (at level 2, left associativity,
   format "n .+1") : nat_scope.
@@ -1431,6 +1431,7 @@ End NatTrec.
 
 Notation natTrecE := NatTrec.trecE.
 
+(*
 Lemma eq_binP : Equality.axiom Ndec.Neqb.
 Proof.
 move=> p q; apply: (iffP idP) => [|<-]; last by case: p => //; elim.
@@ -1510,6 +1511,7 @@ by case: b; last (elim=> //= p <-; rewrite natTrecE mulnn -expnM muln2 ?expnS).
 Qed.
 
 End NumberInterpretation.
+*)
 
 (* Big(ger) nat IO; usage:                              *)
 (*     Num 1 072 399                                    *)
@@ -1518,6 +1520,7 @@ End NumberInterpretation.
 (*        to display the resut of an expression that    *)
 (*        returns a larger integer.                     *)
 
+(*
 Record number : Type := Num {bin_of_number :> N}.
 
 Definition extend_number (nn : number) m := Num (nn * 1000 + bin_of_nat m).
@@ -1545,17 +1548,23 @@ Qed.
 Lemma nat_power_theory : power_theory 1 muln (@eq _) nat_of_bin expn.
 Proof. by split; apply: nat_of_exp_bin. Qed.
 
+*)
+
 (* Interface to the ring tactic machinery. *)
 
 Fixpoint pop_succn e := if e is e'.+1 then fun n => pop_succn e' n.+1 else id.
 
 Ltac pop_succn e := eval lazy beta iota delta [pop_succn] in (pop_succn e 1).
 
+(*
+
 Ltac nat_litteral e :=
   match pop_succn e with
   | ?n.+1 => constr: (bin_of_nat n)
   |     _ => NotConstant
   end.
+
+*)
 
 Ltac succn_to_add :=
   match goal with
@@ -1567,10 +1576,11 @@ Ltac succn_to_add :=
     end; succn_to_add; rewrite {}/x
   | _ => idtac
   end.
-
+(*
 Add Ring nat_ring_ssr : nat_semi_ring (morphism nat_semi_morph,
    constants [nat_litteral], preprocess [succn_to_add],
    power_tac nat_power_theory [nat_litteral]).
+*)
 
 (* A congruence tactic, similar to the boolean one, along with an .+1/+  *)
 (* normalization tactic.                                                 *)
