@@ -85,6 +85,49 @@ elim: s1 (loop [::] s2) => [n|s11 IHs1 s12 IHs2] //= l.
 by rewrite IHs1 [in RHS]IHs1 IHs2 catA.
 Qed.
 
+Require Import BinPos.
+
+Section NumberInterpretation.
+
+Section Trec.
+
+Import NatTrec.
+
+Fixpoint nat_of_pos p0 :=
+  match p0 with
+  | xO p => (nat_of_pos p).*2
+  | xI p => (nat_of_pos p).*2.+1
+  | xH   => 1
+  end.
+
+End Trec.
+
+Local Coercion nat_of_pos : positive >-> nat.
+
+Coercion nat_of_bin b := if b is Npos p then p : nat else 0.
+
+Fixpoint pos_of_nat n0 m0 :=
+  match n0, m0 with
+  | n.+1, m.+2 => pos_of_nat n m
+  | n.+1,    1 => xO (pos_of_nat n n)
+  | n.+1,    0 => xI (pos_of_nat n n)
+  |    0,    _ => xH
+  end.
+
+Notation natTrecE := NatTrec.trecE.
+
+Lemma nat_of_add_pos p q : (p + q)%positive = p + q :> nat.
+Proof. Admitted.
+(* apply: @fst _ (Pplus_carry p q = (p + q).+1 :> nat) _. *)
+(* elim: p q => [p IHp|p IHp|] [q|q|] //=; rewrite !natTrecE //; *)
+(*   by rewrite ?IHp ?nat_of_succ_pos ?(doubleS, doubleD, addn1, addnS). *)
+(* Qed. *)
+
+Lemma nat_of_add_bin b1 b2 : (b1 + b2)%num = b1 + b2 :> nat.
+Proof. by case: b1 b2 => [|p] [|q]; rewrite ?addn0 //= nat_of_add_pos. Qed.
+
+End NumberInterpretation.
+
 Definition Leaf_of_nat n := Leaf ((pos_of_nat n n) - 1)%positive.
 
 Module Import Syntax.

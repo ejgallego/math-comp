@@ -1,6 +1,6 @@
 Require Export abelian.
 Require Export alt.
-Require Export burnside_app.
+(* Require Export burnside_app. *)
 Require Export center.
 Require Export commutator.
 Require Export cyclic.

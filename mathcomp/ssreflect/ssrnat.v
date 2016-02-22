@@ -1,9 +1,12 @@
 (* (c) Copyright 2006-2016 Microsoft Corporation and Inria.                  *)
 (* Distributed under the terms of CeCILL-B.                                  *)
 From mathcomp Require Import ssreflect ssrfun ssrbool eqtype.
+
+(*
 Require Import BinNat.
 Require BinPos Ndec.
 Require Export Ring.
+*)
 
 (******************************************************************************)
 (* A version of arithmetic on nat (natural numbers) that is better suited to  *)
@@ -1699,6 +1702,7 @@ End NatTrec.
 
 Notation natTrecE := NatTrec.trecE.
 
+(*
 Lemma eq_binP : Equality.axiom N.eqb.
 Proof.
 move=> p q; apply: (iffP idP) => [|<-]; last by case: p => //; elim.
@@ -1783,6 +1787,7 @@ by case: b; last (elim=> //= p <-; rewrite natTrecE mulnn -expnM muln2 ?expnS).
 Qed.
 
 End NumberInterpretation.
+*)
 
 (* Big(ger) nat IO; usage:                              *)
 (*     Num 1 072 399                                    *)
@@ -1791,6 +1796,7 @@ End NumberInterpretation.
 (*        to display the result of an expression that   *)
 (*        returns a larger integer.                     *)
 
+(*
 Record number : Type := Num {bin_of_number :> N}.
 
 Definition extend_number (nn : number) m := Num (nn * 1000 + bin_of_nat m).
@@ -1803,9 +1809,11 @@ Canonical number_eqType := Eval hnf in EqType number number_eqMixin.
 
 Notation "[ 'Num' 'of' e ]" := (Num (bin_of_nat e))
   (at level 0, format "[ 'Num'  'of'  e ]") : nat_scope.
+*)
 
 (* Interface to ring/ring_simplify tactics *)
 
+(*
 Lemma nat_semi_ring : semi_ring_theory 0 1 addn muln (@eq _).
 Proof. exact: mk_srt add0n addnC addnA mul1n mul0n mulnC mulnA mulnDl. Qed.
 
@@ -1815,6 +1823,7 @@ Proof. by move: nat_of_add_bin nat_of_mul_bin; split=> //= m n /eqP ->. Qed.
 
 Lemma nat_power_theory : power_theory 1 muln (@eq _) nat_of_bin expn.
 Proof. by split; apply: nat_of_exp_bin. Qed.
+*)
 
 (* Interface to the ring tactic machinery. *)
 
@@ -1822,11 +1831,13 @@ Fixpoint pop_succn e := if e is e'.+1 then fun n => pop_succn e' n.+1 else id.
 
 Ltac pop_succn e := eval lazy beta iota delta [pop_succn] in (pop_succn e 1).
 
+(*
 Ltac nat_litteral e :=
   match pop_succn e with
   | ?n.+1 => constr: (bin_of_nat n)
   |     _ => NotConstant
   end.
+*)
 
 Ltac succn_to_add :=
   match goal with
@@ -1839,9 +1850,11 @@ Ltac succn_to_add :=
   | _ => idtac
   end.
 
+(*
 Add Ring nat_ring_ssr : nat_semi_ring (morphism nat_semi_morph,
    constants [nat_litteral], preprocess [succn_to_add],
    power_tac nat_power_theory [nat_litteral]).
+*)
 
 (* A congruence tactic, similar to the boolean one, along with an .+1/+  *)
 (* normalization tactic.                                                 *)
