@@ -42,7 +42,6 @@ open Termops
 open Namegen
 open Recordops
 open Tacmach
-open Coqlib
 open Glob_term
 open Util
 open Evd
@@ -297,7 +296,7 @@ let mkProt t c gl =
 let mkRefl t c gl =
   let sigma = project gl in
   let sigma = Sigma.Unsafe.of_evar_map sigma in
-  let Sigma (refl, sigma, _) = EConstr.fresh_global (pf_env gl) sigma (build_coq_eq_data()).refl in
+  let Sigma (refl, sigma, _) = EConstr.fresh_global (pf_env gl) sigma (Coqlib.lib_ref "core.eq.refl") in
   let sigma = Sigma.to_evar_map sigma in
   EConstr.mkApp (refl, [|t; c|]), { gl with sigma }
 
@@ -2836,7 +2835,7 @@ let injectl2rtac c = match kind_of_term c with
 let is_injection_case c gl =
   let gl, cty = pfe_type_of gl c in
   let (mind,_), _ = pf_reduce_to_quantified_ind gl cty in
-  eq_gr (IndRef mind) (build_coq_eq ())
+  eq_gr (IndRef mind) (Coqlib.lib_ref "core.eq.type")
 
 let perform_injection c gl =
   (* FIXME *) let c = EConstr.Unsafe.to_constr c in
@@ -2923,8 +2922,8 @@ let rec is_name_in_ipats name = function
 let move_top_with_view = ref (fun _ -> assert false)
 
 let rec nat_of_n n =
-  if n = 0 then EConstr.mkConstruct path_of_O
-  else EConstr.(mkApp (mkConstruct path_of_S, [|nat_of_n (n-1)|]))
+  if n = 0 then EConstr.mkConstruct Coqlib.path_of_O
+  else EConstr.(mkApp (mkConstruct Coqlib.path_of_S, [|nat_of_n (n-1)|]))
 
 let ssr_abstract_id = Summary.ref "~name:SSR:abstractid" 0
 
@@ -3519,7 +3518,8 @@ let genclrtac cl cs clr =
       (apply_type cl cs)
       (fun type_err gl ->
          tclTHEN
-           (tclTHEN (Proofview.V82.of_tactic (elim_type (EConstr.of_constr (Universes.constr_of_global @@ build_coq_False ())))) (cleartac clr))
+           (tclTHEN (Proofview.V82.of_tactic (elim_type
+                    (EConstr.of_constr (Universes.constr_of_global @@ Coqlib.lib_ref "core.False.type")))) (cleartac clr))
            (fun gl -> raise type_err)
            gl))
     (cleartac clr)
@@ -3678,7 +3678,7 @@ END
 let mkCoqEq gl =
   let sigma = project gl in
   let sigma = Sigma.Unsafe.of_evar_map sigma in
-  let Sigma (eq, sigma, _) = EConstr.fresh_global (pf_env gl) sigma (build_coq_eq_data()).eq in
+  let Sigma (eq, sigma, _) = EConstr.fresh_global (pf_env gl) sigma (Coqlib.lib_ref "core.eq.type") in
   let sigma = Sigma.to_evar_map sigma in
   let gl = { gl with sigma } in
   eq, gl
@@ -3977,7 +3977,7 @@ let ssrelim ?(is_case=false) ?ist deps what ?elim eqid ipats gl =
   (* Utils of local interest only *)
   let iD s ?t gl = let t = match t with None -> pf_concl gl | Some x -> x in
     pp(lazy(str s ++ pr_constr t)); tclIDTAC gl in
-  let eq, gl = pf_fresh_global (build_coq_eq ()) gl in
+  let eq, gl = pf_fresh_global (Coqlib.lib_ref "core.eq.type") gl in
   let eq = EConstr.of_constr eq in
   let protectC, gl = pf_mkSsrConst "protect_term" gl in
   let fire_subst gl t = (Reductionops.nf_evar (project gl) t) in
@@ -4517,8 +4517,8 @@ ARGUMENT EXTEND ssrcongrarg TYPED AS (int * ssrterm) * ssrdgens
 END
 
 let rec mkRnat n =
-  if n <= 0 then CAst.make @@ GRef (glob_O, None) else
-  mkRApp (CAst.make @@ GRef (glob_S, None)) [mkRnat (n - 1)]
+  if n <= 0 then CAst.make @@ GRef (Coqlib.glob_O, None) else
+  mkRApp (CAst.make @@ GRef (Coqlib.glob_S, None)) [mkRnat (n - 1)]
 
 let interp_congrarg_at ist gl n rf ty m =
   pp(lazy(str"===interp_congrarg_at==="));
@@ -4582,7 +4582,7 @@ let newssrcongrtac arg ist gl =
   let ssr_congr lr = EConstr.mkApp (arr, lr) in
   (* here thw two cases: simple equality or arrow *)
   let equality, _, eq_args, gl' =
-    let eq, gl = pf_fresh_global (build_coq_eq ()) gl in
+    let eq, gl = pf_fresh_global (Coqlib.lib_ref "core.eq.type") gl in
     pf_saturate gl (EConstr.of_constr eq) 3 in
   tclMATCH_GOAL (equality, gl') (fun gl' -> fs gl' (List.assoc 0 eq_args))
   (fun ty -> congrtac (arg, Detyping.detype false [] (pf_env gl) (project gl) ty) ist)
@@ -4979,7 +4979,7 @@ let rwcltac cl rdx dir sr gl =
         pp(lazy(str"r@rwcltac=" ++ pr_econstr (snd sr)));
   let cvtac, rwtac, gl =
     if closed0 r' then 
-      let env, sigma, c, c_eq = pf_env gl, fst sr, snd sr, build_coq_eq () in
+      let env, sigma, c, c_eq = pf_env gl, fst sr, snd sr, Coqlib.lib_ref "core.eq.type" in
       let sigma, c_ty = Typing.type_of env sigma c in
         pp(lazy(str"c_ty@rwcltac=" ++ pr_econstr c_ty));
       match EConstr.kind_of_type sigma (Reductionops.whd_all env sigma c_ty) with
@@ -5023,7 +5023,7 @@ let rwcltac cl rdx dir sr gl =
 
 
 let lz_coq_prod =
-  let prod = lazy (build_prod ()) in fun () -> Lazy.force prod
+  let prod = lazy (Coqlib.build_prod ()) in fun () -> Lazy.force prod
 
 let lz_setoid_relation =
   let sdir = ["Classes"; "RelationClasses"] in
@@ -5032,7 +5032,7 @@ let lz_setoid_relation =
   | env', srel when env' == env -> srel
   | _ ->
     let srel =
-       try Some (Universes.constr_of_global @@ coq_reference "Class_setoid" sdir "RewriteRelation")
+       try Some (Universes.constr_of_global @@ Coqlib.coq_reference "Class_setoid" sdir "RewriteRelation")
        with _ -> None in
     last_srel := (env, srel); srel
 
@@ -5078,7 +5078,7 @@ let rwprocess_rule dir rule gl =
           | _ ->
             let sigma, pi2 = Evd.fresh_global env sigma coq_prod.Coqlib.proj2 in
             EConstr.mkApp (EConstr.of_constr pi2, ra), sigma in
-        if EConstr.eq_constr sigma a.(0) (EConstr.of_constr (Universes.constr_of_global @@ build_coq_True ())) then
+        if EConstr.eq_constr sigma a.(0) (EConstr.of_constr (Universes.constr_of_global @@ Coqlib.lib_ref "core.True.type")) then
          let s, sigma = sr sigma 2 in
          loop (converse_dir d) sigma s a.(1) rs 0
         else
@@ -5949,7 +5949,7 @@ let ssrabstract ist gens (*last*) gl =
   let main _ (_,cid) ist gl =
 (*
     let proj1, proj2, prod =
-      let pdata = build_prod () in
+      let pdata = lib_ref "core.prod.type" in
       pdata.Coqlib.proj1, pdata.Coqlib.proj2, pdata.Coqlib.typ in
 *)
     let concl, env = pf_concl gl, pf_env gl in
