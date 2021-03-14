@@ -138,6 +138,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   `perm_eq_nilP`, `perm_eq_consP`, `leq_size_perm`, `uniq_perm_eq`,
   `perm_eq_iotaP`, and `perm_undup_count`.
 
+- in `tuple.v`, add an instance for `sort` so `[tuple of sort r t]` works.
+
 ### Infrastructure
 
 ### Misc
